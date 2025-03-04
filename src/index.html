@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EDGEMAX</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/LsP4LRYc/LOGO-large.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      header {
+        background: #2c3e50;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .custom-fade-in {
+        opacity: 1 !important;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .custom-fade-out {
+        opacity: 0 !important;
+        transition: opacity 0.5s ease-in-out;
+      }
+      #PedestrianGateContainer, #ASGContainer, #FenceContainer, #SGContainer {
+        opacity: 0;
+      }
+      .card.selected {
+        border: 3px solid #0d6efd;
+        /* box-shadow: 0 0 10px rgba(13, 110, 253, 0.5); */
+      }
+
+      #backToTop {
+            position: fixed;
+            bottom: 25px;
+            right: 2.5px;
+            width: 50px;
+            height: 50px;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: none; /* 默认隐藏 */
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        #backToTop:hover {
+            background-color: #0b5ed7;
+            transform: scale(1.1);
+        }
+
+        footer {
+          background: #2c3e50;
+          color: #fff;
+          text-align: center;
+          position: sticky;
+          bottom: 0;
+          width: 100%;
+          flex-shrink: 0;
+          transition: opacity 0.5s ease; /* 添加淡入效果 */
+          opacity: 0; /* 初始透明度为 0 */
+          margin-top: 2rem;
+        }
+
+        footer.visible {
+            display: block;
+            opacity: 1; /* 完全不透明 */
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>EdgeMax</h1>
+    </header>
+
+    <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5" style="margin-right:calc(-0.015* var(--bs-gutter-x)); padding-top: 1rem !important;">
+        <div class="col">
+          <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" id="PGCard" style="background-image: url('https://i.postimg.cc/RNVSBzpF/pedestrain-gate.jpg'); background-size: cover; background-position: center;" >
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+              <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Pedestrian Gate</h3>
+              <ul class="d-flex list-unstyled mt-auto">
+                <li class="me-auto">
+                  <img src="https://i.postimg.cc/LsP4LRYc/LOGO-large.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col">
+          <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" id="ASGCard" style="background-image: url('https://i.postimg.cc/r08M0yrd/auto-sliding-gate.jpg'); background-size: cover; background-position: center;">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+              <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Auto sliding Gate</h3>
+              <ul class="d-flex list-unstyled mt-auto">
+                <li class="me-auto">
+                  <img src="https://i.postimg.cc/LsP4LRYc/LOGO-large.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col">
+          <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"  id="FenceCard" style=" background-image: url('https://i.postimg.cc/TyjT35pM/fence.jpg'); background-size: cover; background-position: center;">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+              <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Fence</h3>
+              <ul class="d-flex list-unstyled mt-auto">
+                <li class="me-auto">
+                  <img src="https://i.postimg.cc/LsP4LRYc/LOGO-large.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+            <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" id="SGCard" style="background-image: url('https://i.postimg.cc/VrD1jyqK/swing-gate.jpg'); background-size: cover; background-position: center;">
+              <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+                <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Swing Gate</h3>
+                <ul class="d-flex list-unstyled mt-auto">
+                  <li class="me-auto">
+                    <img src="https://i.postimg.cc/LsP4LRYc/LOGO-large.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class = "container d-none" id="PedestrianGateContainer">
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">Your cart</span>
+                <!-- <span class="badge bg-primary rounded-pill">4</span> -->
+            </h4>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                    <h6 class="my-1">Pedestrian Gate</h6>
+                    <small class="text-body-secondary">$300/m²</small>
+                </div>
+                <span class="text-body-secondary" id="PGAreaPrice"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                    <h6 class="my-0">Post</h6>
+                    <small class="text-body-secondary" id="PGPOSTSecondText"></small>
+                </div>
+                <span class="text-body-secondary" id="PGPOSTPrice"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">Lock and hinges</h6>
+                  <small class="text-body-secondary"></small>
+                </div>
+                <span class="text-body-secondary" id="PGLAHPrice"></span>
+                </li>
+
+
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">Installaion</h6>
+                        <small class="text-body-secondary"></small>
+                </div>
+                <span class="text-body-secondary" id="PGINSTPrice"></span>
+                </li>
+                
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                <span>Total (AUD)</span>
+                <strong id="PGTOTAL"></strong>
+                </li>
+
+                <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                  <div class="text-success">
+                      <h6 class="my-0">Total (AUD)</h6>
+                      <small>Include GST</small>
+                  </div>
+                  <span class="text-success" id="PGTOTALGST"></span>
+            </ul>
+    
+            </div>
+            <div class="col-md-7 col-lg-8">
+            <h3 class="mb-3" id="productName">Pedestrian Gate</h3>
+            <form class="needs-validation" novalidate="">
+                <div class="row g-3">
+                <div class="col-sm-6">
+                    <label for="firstName" class="form-label">Width</label>
+                    <div class="input-group">
+                      <input class="form-control" id="PGWidth" placeholder="" value="" required="" min="0" max="1000000" type="number">
+                      <div class="input-group-append">
+                        <span class="input-group-text">mm</span>
+                      </div>
+                    </div>
+                </div>
+    
+                <div class="col-sm-6">
+                    <label for="lastName" class="form-label">Height</label>
+                    <div class="input-group">
+                      <input class="form-control" id="PGHeight" placeholder="" value="" required="" min="0" max="2100" type="number">
+                      <div class="input-group-append">
+                        <span class="input-group-text">mm</span>
+                      </div>
+                    </div>
+                </div>
+        
+                <hr class="my-4">
+    
+                <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="PGLockAndHinges" checked>
+                <label class="form-check-label" for="same-address">Lock and hinges</label>
+                </div>
+    
+                <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="PGInstallaionFee" checked>
+                <label class="form-check-label" for="save-info">Installaion fee</label>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class = "container d-none" id="ASGContainer">
+      <div class="row g-5">
+          <div class="col-md-5 col-lg-4 order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-primary">Your cart</span>
+              <!-- <span class="badge bg-primary rounded-pill">4</span> -->
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Auto Sliding Gate</h6>
+                  <small class="text-body-secondary">$300/m²</small>
+              </div>
+              <span class="text-body-secondary" id="ASGAreaPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm"  id="ASGGKItem">
+              <div>
+                  <h6 class="my-0">Gate Kits</h6>
+                  <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="ASGGKPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Track</h6>
+                  <small class="text-body-secondary" id="ASGTrackSecondText"></small>
+              </div>
+              <span class="text-body-secondary" id="ASGTrackPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm" id="ASGMotorItem">
+              <div>
+                  <h6 class="my-0">Motor</h6>
+                  <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="ASGMotorPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm d-none" id="ASGSSItem">
+              <div>
+                  <h6 class="my-0">Solar System</h6>
+                  <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="ASGSolarPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm d-none" id="ASGHDMItem">
+              <div>
+                  <h6 class="my-0">Heavy Duty Motor</h6>
+                  <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="ASGHDMPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Installaion</h6>
+                  <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="ASGINSTPrice"></span>
+            </li>
+              
+            </li>
+
+              <li class="list-group-item d-flex justify-content-between">
+              <span>Total (AUD)</span>
+              <strong id="ASGTOTAL"></strong>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                <div class="text-success">
+                    <h6 class="my-0">Total (AUD)</h6>
+                    <small>Include GST</small>
+                </div>
+                <span class="text-success" id="ASGTOTALGST"></span>
+          </ul>
+  
+          </div>
+          <div class="col-md-7 col-lg-8">
+          <h4 class="mb-3" id="productName">Auto Sliding Gate</h4>
+          <form class="needs-validation" novalidate="">
+              <div class="row g-3">
+              <div class="col-sm-6">
+                  <label for="firstName" class="form-label">Width</label>
+                  <div class="input-group">
+                    <input class="form-control" id="ASGWidth" placeholder="" value="" required="" min="0" max="1000000" type="number">
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+              </div>
+  
+              <div class="col-sm-6">
+                  <label for="lastName" class="form-label">Height</label>
+                  <div class="input-group">
+                    <input class="form-control" id="ASGHeight" placeholder="" value="" required="" min="0" max="2100" type="number">
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+              </div>
+    
+              <hr class="my-4">
+
+
+
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="ASGGK" checked>
+                <label class="form-check-label" for="same-address">Gate Kits</label>
+              </div>
+
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="ASGMotor" checked>
+                <label class="form-check-label" for="same-address">Motor</label>
+              </div>
+
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="ASGSS">
+                <label class="form-check-label" for="same-address">Solar System</label>
+              </div>
+  
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="ASGHDM">
+                <label class="form-check-label" for="same-address">Heavy Duty Motor</label>
+              </div>
+
+  
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="ASGInstallaionFee" checked>
+                <label class="form-check-label" for="save-info">Installaion fee</label>
+              </div>
+          </form>
+          </div>
+      </div>
+    </div>
+    </div>
+
+    <div class = "container d-none" id="FenceContainer">
+      <div class="row g-5">
+          <div class="col-md-5 col-lg-4 order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-primary">Your cart</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Fence</h6>
+                  <small class="text-body-secondary" id="FAreaSecondText">$130/m²</small>
+              </div>
+              <span class="text-body-secondary" id="FAreaPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Fence bracket</h6>
+                  <small class="text-body-secondary" id="FBracketSecondText"></small>
+              </div>
+              <span class="text-body-secondary" id="FBracketPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm" id="FPOSTITEM">
+              <div>
+                  <h6 class="my-0">Post</h6>
+                  <small class="text-body-secondary" id="FPOSTSecondText"></small>
+              </div>
+              <span class="text-body-secondary" id="FPostPrice"></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Installaion</h6>
+                  <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="FINSTPrice"></span>
+            </li>
+              
+            </li>
+
+              <li class="list-group-item d-flex justify-content-between">
+              <span>Total (AUD)</span>
+              <strong id="FTOTAL"></strong>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                <div class="text-success">
+                    <h6 class="my-0">Total (AUD)</h6>
+                    <small>Include GST</small>
+                </div>
+                <span class="text-success" id="FTOTALGST"></span>
+          </ul>
+  
+          </div>
+          <div class="col-md-7 col-lg-8">
+          <h4 class="mb-3" id="productName">Fence</h4>
+          <form class="needs-validation" novalidate="">
+              <div class="row g-3">
+              <div class="col-sm-6">
+                  <label for="firstName" class="form-label">Width</label>
+                  <div class="input-group">
+                    <input class="form-control" id="FWidth" placeholder="" value="" required="" min="0" max="1000000" type="number">
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+              </div>
+  
+              <div class="col-sm-6">
+                  <label for="lastName" class="form-label">Height</label>
+                  <div class="input-group">
+                    <input class="form-control" id="FHeight" placeholder="" value="" required="" min="0" max="2100" type="number"> 
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+              </div>
+              
+              <hr class="my-4">
+
+              <div class="col-sm-6">
+                <label for="lastName" class="form-label">Fence Number</label>
+                <div class="input-group">
+                  <input class="form-control" id="FNumber" placeholder="" value="" required="" min="1" max="1000" type="number" step="1" oninput="this.value = Math.abs(Math.floor(this.value))"> 
+                </div>
+            </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="IGP" checked>
+                <label class="form-check-label" for="IGP">
+                  In ground post
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="OBW" >
+                <label class="form-check-label" for="OBW">
+                  On block walls
+                </label>
+              </div>
+  
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="FInstallaionFee" checked>
+              <label class="form-check-label" for="save-info">Installaion fee</label>
+            </div>
+          </form>
+          </div>
+      </div>
+    </div>
+    </div>
+
+    <div class = "container d-none" id="SGContainer">
+      <div class="row g-5">
+          <div class="col-md-5 col-lg-4 order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-primary">Your cart</span>
+              <!-- <span class="badge bg-primary rounded-pill">4</span> -->
+          </h4>
+          <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Swing Gate</h6>
+                  <small class="text-body-secondary">$300/m²</small>
+              </div>
+              <span class="text-body-secondary" id="SGAreaPrice"></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                  <h6 class="my-0">Post</h6>
+                  <small class="text-body-secondary" id="SGPOSTSecondText"></small>
+              </div>
+              <span class="text-body-secondary" id="SGPOSTPrice"></span>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">Heavy Duty Hinges</h6>
+                  <small class="text-body-secondary"></small>
+                </div>
+                <span class="text-body-secondary" id="SGHDHPrice"></span>
+                </li>
+
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Lock and Latch</h6>
+                <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="SGHALPrice"></span>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between lh-sm d-none" id="SGMotorItem">
+                <div>
+                  <h6 class="my-0">Motor</h6>
+                  <small class="text-body-secondary"></small>
+                </div>
+                <span class="text-body-secondary">$ 850</span>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between lh-sm d-none" id="SGTrackItem">
+                <div>
+                  <h6 class="my-0">Auto Track</h6>
+                  <small class="text-body-secondary" id="SGTrackSecondText"></small>
+                </div>
+                <span class="text-body-secondary" id="SGTrackPrice"></span>
+              </li>
+              
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                  <div>
+                      <h6 class="my-0">Installaion</h6>
+                      <small class="text-body-secondary"></small>
+              </div>
+              <span class="text-body-secondary" id="SGINSTPrice"></span>
+              </li>
+              
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+              <span>Total (AUD)</span>
+              <strong id="SGTOTAL"></strong>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                <div class="text-success">
+                    <h6 class="my-0">Total (AUD)</h6>
+                    <small>Include GST</small>
+                </div>
+                <span class="text-success" id="SGTOTALGST"></span>
+          </ul>
+  
+          </div>
+          <div class="col-md-7 col-lg-8">
+          <h4 class="mb-3" id="productName">Swing Gate</h4>
+          <form class="needs-validation" novalidate="">
+              <div class="row g-3">
+              <div class="col-sm-6">
+                  <label for="firstName" class="form-label">Width</label>
+                  <div class="input-group">
+                    <input class="form-control" id="SGWidth" placeholder="" value="" required="" min="0" max="1000000" type="number">
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+              </div>
+  
+              <div class="col-sm-6">
+                  <label for="lastName" class="form-label">Height</label>
+                  <div class="input-group">
+                    <input class="form-control" id="SGHeight" placeholder="" value="" required="" min="0" max="2100" type="number">
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+              </div>
+    
+              <hr class="my-4">
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="Maunal" checked>
+                <label class="form-check-label" for="Maunal">
+                  Maunal
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="Auto" >
+                <label class="form-check-label" for="Auto">
+                  Auto
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="SGHDM" checked>
+                <label class="form-check-label" for="same-address">Heavy Duty Hinges</label>
+              </div>
+
+              <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="SGLockAndHinges" checked>
+              <label class="form-check-label" for="same-address">Lock and latch</label>
+              </div>
+
+              
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="SGDoulbe">
+                <label class="form-check-label" for="same-address">Double Gate</label>
+              </div>
+              
+  
+              <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="SGInstallaionFee" checked>
+              <label class="form-check-label" for="save-info">Installaion fee</label>
+              </div>
+          </form>
+          </div>
+      </div>
+      </div>
+    </div>
+
+    <div id="main-form"></div>
+
+    </div>
+    <footer id="footer">
+      <p>&copy; 2025 EdgeMax. Copy Right.</p>
+    </footer>
+    <button id="backToTop" onclick="scrollToTop()">↑</button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./index.js"></script>
+    <script>
+      window.onscroll = function () {
+          const button = document.getElementById("backToTop");
+          const footer = document.getElementById('footer');
+          if (document.documentElement.scrollTop > 300) {
+              button.style.display = "flex";
+              footer.classList.add('visible');
+          } else {
+              button.style.display = "none";
+              footer.classList.remove('visible');
+          }
+      };
+      function scrollToTop() {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+  </script>
+
+  </body>
+
+</html>

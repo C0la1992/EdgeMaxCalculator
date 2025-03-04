@@ -1,0 +1,25 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bihan Zhang",
+  "license": "ISC",
+  "description": "A calculator for EdgeMax, mainly focus on calculate the price for different outdoor decoration like fence or gate",
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "vanilla-javascript": "^1.1.6"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "html-inline-script-webpack-plugin": "^3.2.1",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  }
+}
